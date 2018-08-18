@@ -295,12 +295,10 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-GRAPHITE = -fgraphite -fgraphite-identity -floop-interchange -ftree-loop-distribution -floop-strip-mine -floop-block -ftree-loop-linear
-
 HOSTCC       = gcc
 HOSTCXX      = g++
-HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -Ofast -fno-inline-functions -fno-ipa-cp-clone -fomit-frame-pointer -std=gnu89 $(GRAPHITE)
-HOSTCXXFLAGS = -Ofast -fno-inline-functions -fno-ipa-cp-clone $(GRAPHITE)
+HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O2 -fno-inline-functions -fno-ipa-cp-clone -fomit-frame-pointer -std=gnu89
+HOSTCXXFLAGS = -O2 -fno-inline-functions -fno-ipa-cp-clone
 
 ifeq ($(shell $(HOSTCC) -v 2>&1 | grep -c "clang version"), 1)
 HOSTCFLAGS  += -Wno-unused-value -Wno-unused-parameter \
@@ -385,7 +383,7 @@ AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage -fno-tree-loop-im
 CFLAGS_KCOV	= -fsanitize-coverage=trace-pc
 
-# fall back to -march=armv8-a in case the compiler isn't compatible 
+# fall back to -march=armv8-a in case the compiler isn't compatible
 # with -mcpu and -mtune
 ARM_ARCH_OPT := -mcpu=cortex-a57 -mtune=cortex-a57
 GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a) \
@@ -394,17 +392,7 @@ GEN_OPT_FLAGS := $(call cc-option,$(ARM_ARCH_OPT),-march=armv8-a) \
  -fomit-frame-pointer \
  -fmodulo-sched \
  -fmodulo-sched-allow-regmoves \
- -fivopts \
- -Wno-maybe-uninitialized \
- -Wno-incompatible-pointer-types \
- -Wno-format-security \
- -Wno-discarded-array-qualifiers \
- -Wno-memset-transposed-args \
- -Wno-bool-compare \
- -Wno-logical-not-parentheses \
- -Wno-switch-bool \
- -Wno-array-bounds \
- -Wno-unused-variable
+ -fivopts
 
 # flags to fix module loading issues if incompatible general optimizations are used
 MOD_FIX_FLAGS := -fno-tree-loop-vectorize
@@ -652,7 +640,7 @@ KBUILD_AFLAGS	+= $(call cc-option,-fno-PIE)
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -Ofast -fno-inline-functions -fno-ipa-cp-clone
+KBUILD_CFLAGS	+= -O2 -fno-inline-functions -fno-ipa-cp-clone
 endif
 
 # Tell gcc to never replace conditional load with a non-conditional one
