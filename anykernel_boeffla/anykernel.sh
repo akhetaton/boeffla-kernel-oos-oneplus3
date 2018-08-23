@@ -4,12 +4,13 @@
 #
 # Modified by Lord Boeffla, 05.12.2016
 
-############### AnyKernel setup start ############### 
+############### AnyKernel setup start ###############
 
 # EDIFY properties
 do.devicecheck=1
 do.initd=0
 do.modules=1
+do.system=1
 do.cleanup=1
 device.name1=oneplus3t
 device.name2=OnePlus3T
@@ -33,7 +34,7 @@ add_seandroidenforce=0
 supersu_exclusions=""
 is_slot_device=0;
 
-############### AnyKernel setup end ############### 
+############### AnyKernel setup end ###############
 
 ## AnyKernel methods (DO NOT CHANGE)
 # import patching functions/variables - see for reference
